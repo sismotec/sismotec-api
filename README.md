@@ -24,3 +24,7 @@ Now you can make requests to localhost:3000.
 ## Live API
 
 You can make requests to the live API at http://sismotecapi.herokuapp.com. 
+
+## API Reference
+
+The API Reference can be found here: [Sismo Tec API Reference](http://docs.sismotecapi.apiary.io).
