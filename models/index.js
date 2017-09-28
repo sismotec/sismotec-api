@@ -60,11 +60,11 @@ models.forEach(function(model) {
   m.Recurso.belongsToMany(m.CentroDeAcopio, {as: 'centros_de_acopio', through: 'Inventario', foreignKey: 'id_recurso'});
   m.CentroDeAcopio.belongsToMany(m.Recurso, {as: 'recursos', through: 'Inventario', foreignKey: 'id_centro_acopio'});
 
-  m.Recurso.belongsToMany(m.NecesidadAcopio, {as: 'necesidades_acopio', through: 'CantidadAcopioRecurso', foreignKey: 'id_recurso'});
-  m.NecesidadAcopio.belongsToMany(m.Recurso, {as: 'recursos', through: 'CantidadAcopioRecurso', foreignKey: 'id_necesidad_acopio'});
+  m.Recurso.belongsToMany(m.NecesidadAcopio, {as: 'necesidades_acopio', through: 'cantidad_acopio_recurso', foreignKey: 'id_recurso'});
+  m.NecesidadAcopio.belongsToMany(m.Recurso, {as: 'recursos', through: 'cantidad_acopio_recurso', foreignKey: 'id_necesidad_acopio'});
 
-  m.Recurso.belongsToMany(m.NecesidadBeneficiario, {as: 'necesesidades_beneficiarios', through: 'CantidadBeneficiarioRecurso', foreignKey: 'id_recurso'});
-  m.NecesidadBeneficiario.belongsToMany(m.Recurso, {as: 'recursos', through: 'CantidadBeneficiarioRecurso', foreignKey: 'id_necesidad_beneficiario'});
+  m.Recurso.belongsToMany(m.NecesidadBeneficiario, {as: 'necesesidades_beneficiarios', through: 'cantidad_beneficiario_recurso', foreignKey: 'id_recurso'});
+  m.NecesidadBeneficiario.belongsToMany(m.Recurso, {as: 'recursos', through: 'cantidad_beneficiario_recurso', foreignKey: 'id_necesidad_beneficiario'});
 
   m.NecesidadBeneficiario.belongsToMany(m.CentroDeAcopio, {as: 'centros_de_acopio', through: 'favoritos', foreignKey: 'id_necesidad_beneficiario'});
   m.CentroDeAcopio.belongsToMany(m.NecesidadBeneficiario, {as: 'necesesidades_beneficiarios', through: 'favoritos', foreignKey: 'id_centro_acopio'});
