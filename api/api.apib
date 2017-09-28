@@ -25,18 +25,18 @@ configurar el encabezado <strong>Content-type</strong> a
 
 
 ## Sismo Tec API Root [/]
-Este endpoint es nuestro tradicional "Hello World!".
+Este endpoint es nuestro tradicional "¡Hola Mundo!".
 
-### Get the entry point [GET]
+### Endpoint prueba [GET]
 
 + Response 200 (application/json; charset=utf-8)
 
     + Attributes
     
-        + message: 'Hello World! This is SismoTec API!' (string)
+        + mensaje: '¡Hola Mundo! Esto es SismoTec API!' (string)
 
 
-## Crear cuenta [/sign-up]
+## Crear cuenta [/crear-cuenta]
 
 ### Crear cuenta [POST]
 Crea una cuenta para un beneficiario o centro de acopio. Se necesita información 
@@ -48,13 +48,14 @@ contraseña y tipo.
     
     + Attributes
     
-        + institutionName: `Tec de Monterrey Campus Monterrey` (string, required) 
+        + nombreInstitucion: `Tec de Monterrey Campus Monterrey` (string, required) 
+        Si se quiere crear una cuenta individual, mandar un string vacío.
             
-        + responsibleName: `John Doe` (string, required)
+        + nombreResponsable: `John Doe` (string, required)
         
-        + responsibleEmail: johndoe@tec.mx (string, required)
+        + emailResponsable: johndoe@tec.mx (string, required)
             
-        + responsibleNumber: 5281828384 (number, required)
+        + numeroResponsable: 5281828384 (number, required)
         
         + lat: 83.43 (number, required)
         
@@ -62,7 +63,7 @@ contraseña y tipo.
             
         + password: mypassword123 (string, required)
         
-        + type: Centro de acopio (string, required)
+        + tipo: Centro de acopio (string, required)
         Posibles valores: Centro de acopio, Beneficiario.
 
 
@@ -72,10 +73,10 @@ contraseña y tipo.
     
         + id: 2 (number, required)
         
-        + type: Centro de acopio (string, required)
+        + tipo: Centro de acopio (string, required)
 
 
-## Iniciar sesión [/log-in]
+## Iniciar sesión [/iniciar-sesion]
 
 ### Iniciar sesión [POST]
 Iniciar sesión para un beneficiario. Se necesita información del celular del
@@ -85,7 +86,7 @@ responsable y su contraseña.
     
     + Attributes
 
-        + responsibleEmail: johndoe@tec.mx (string, required)
+        + emailResponsable: johndoe@tec.mx (string, required)
 
         + password: mypassword123 (string, required)
 
@@ -96,7 +97,7 @@ responsable y su contraseña.
     
         + id: 2 (number, required)
         
-        + type: Centro de acopio (string, required)
+        + tipo: Centro de acopio (string, required)
 
 
 # Group Beneficiarios
@@ -113,7 +114,7 @@ de envío, donde cada órden tiene un arreglo de recursos.
     
     + Attributes
     
-        + beneficiaryID: 2 (number, required)
+        + beneficiarioID: 2 (number, required)
 
 
 + Response 200 (application/json; charset=utf-8)
@@ -133,16 +134,16 @@ todos los recursos que contempla una necesidad.
     
     + Attributes
     
-        + beneficiaryID: 2 (number, required)
+        + beneficiarioID: 2 (number, required)
     
-        + resources: Resource, Resource2 (array[Resource], required)
+        + recursos: Resource, Resource2 (array[Resource], required)
 
 
 + Response 201 (application/json; charset=utf-8)
 
     + Attributes
     
-        + necesityID: 3 (number, required)
+        + necesidadID: 3 (number, required)
 
 
 ### Obtener necesidades [GET]
@@ -155,7 +156,7 @@ necesidades.
     
     + Attributes
     
-        + beneficiariesID: 2, 5 (array[number], required)
+        + beneficiariosID: 2, 5 (array[number], required)
     
 
 
@@ -163,7 +164,7 @@ necesidades.
 
     + Attributes
     
-        + necessities: Necessity, Necessity2 (array[Necessity], required)
+        + necesidades: Necessity, Necessity2 (array[Necessity], required)
 
 
 ### Confirmación de recibido [PUT]
@@ -174,9 +175,9 @@ Se necesita el ID del beneficiario y el ID de la órden de envío.
     
     + Attributes
     
-        + beneficiaryID: 2 (number, required)
+        + beneficiarioID: 2 (number, required)
         
-        + orderID: 1 (number, required)
+        + ordenID: 1 (number, required)
 
 
 + Response 200 (application/json; charset=utf-8)
@@ -196,7 +197,7 @@ de órdenes de envío, donde cada órden tiene un arreglo de recursos.
     
     + Attributes
     
-        + centerID: 6 (number, required)
+        + centroAcopioID: 6 (number, required)
 
 
 + Response 200 (application/json; charset=utf-8)
@@ -215,15 +216,15 @@ el destino y el tiempo estimado.
     
     + Attributes
     
-        + centerID: 6 (number, required)
+        + centroAcopioID: 6 (number, required)
         
-        + resources: Resource, Resource2 (array[Resource], required)
+        + recursos: Resource, Resource2 (array[Resource], required)
         
-        + destinationLat: 21.34 (number, required)
+        + destinoLat: 21.34 (number, required)
 
-        + destinationLon: 23.45 (number, required)
+        + destinoLon: 23.45 (number, required)
         
-        + estimatedTime: 1231 (number, required)
+        + tiempoEstimado: 1231 (number, required)
         Número entero en milisegundos.
 
 
@@ -231,7 +232,7 @@ el destino y el tiempo estimado.
 
     + Attributes
     
-        + orderID: 5 (number, required)
+        + ordenID: 5 (number, required)
 
 
 ### Cancelar órdenes de envíos [DELETE]
@@ -242,7 +243,7 @@ Se necesita el ID de la órden de envío a cancelar.
     
     + Attributes
     
-        + orderID: 5 (number, required)
+        + ordenID: 5 (number, required)
 
 
 + Response 200 (application/json; charset=utf-8)
@@ -264,11 +265,11 @@ Este endpoint permite obtener todos los recursos disponibles.
         + (ResourceStored)
             + id: 2 (number, required)
 
-            + name: Atún (string, required)
+            + nombre: Atún (string, required)
 
-            + category: Enlatados (string, required)
+            + categoria: Enlatados (string, required)
 
-            + unit: Latas (string, required)
+            + unidad: Latas (string, required)
 
 # Group Necesidades
 Endpoints relacionados a las necesidades de beneficiarios y centros de acopio.
@@ -320,62 +321,62 @@ una ubicación mandada. Se necesita la latitud y longitud de la ubicación.
 # Data Structures
 
 ## LocalNecessity
-+ necessityID: 2 (number, required)
++ necesidadID: 2 (number, required)
 
-+ ownerID: 4 (number, required)
++ propietarioID: 4 (number, required)
 
-+ ownerType: Centro de acopio (string, required)
++ propietarioTipo: Centro de acopio (string, required)
 
 + lat: 83.43 (number, required)
         
 + lon: 32.56 (number, required)
 
-+ resources: Resource, Resource2 (array[Resource], required)
++ recursos: Resource, Resource2 (array[Resource], required)
 
 ## Necessity
-+ beneficiaryID: 2 (number, required)
++ beneficiarioID: 2 (number, required)
 
-+ resources: Resource, Resource2 (array[Resource], required)
++ recursos: Resource, Resource2 (array[Resource], required)
 
 ## Necessity2
-+ beneficiaryID: 4 (number, required)
++ beneficiarioID: 4 (number, required)
 
-+ resources: Resource, Resource2 (array[Resource], required)
++ recursos: Resource, Resource2 (array[Resource], required)
 
 ## Resource
 + id: 1 (number, required)
 
-+ quantity: 50 (number, required)
++ cantidad: 50 (number, required)
 
 ## Resource2
 + id: 4 (number, required)
 
-+ quantity: 20 (number, required)
++ cantidad: 20 (number, required)
 
 ## ResourceStored
 + id: 4 (number, required)
 
-+ name: Agua (string, required)
++ nombre: Agua (string, required)
 
-+ category: Bebidas (string, required)
++ categoria: Bebidas (string, required)
 
-+ unit: Litros (string, required)
++ unidad: Litros (string, required)
 
 ## Shipping Orders
 + id: 1 (number, required)
 
-+ originLat: 45.44 (number, required)
++ origenLat: 45.44 (number, required)
 
-+ originLon: 51.23 (number, required)
++ origenLon: 51.23 (number, required)
 
-+ destinationLat: 21.34 (number, required)
++ destinoLat: 21.34 (number, required)
 
-+ destinationLon: 23.45 (number, required)
++ destinoLon: 23.45 (number, required)
 
-+ status: En camino (string, required)
++ estado: En camino (string, required)
     Valores posibles: En camino, Enviado, Cancelado.
     
-+ resources: Resource, Resource2 (array[Resource], required)
++ recursos: Resource, Resource2 (array[Resource], required)
 
 
     
