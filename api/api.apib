@@ -2,35 +2,381 @@ FORMAT: 1A
 HOST: http://sismotecapi.herokuapp.com
 
 # Sismo Tec API
-
-Sismo TEC REST API that supports Sismo Tec apps.
+Sismo TEC REST API es utilizada por las aplicaciones Sismo Tec móviles y web.
 
 ## Base URL
-All production requests are made to: <br />
+Las solicitudes de producción se hacen a:<br />
 http://sismotecapi.herokuapp.com
 
 ## Mock URL
-All mock requests are made to: <br />
+Las solicitudes de prueba se hacen a: <br />
 http://private-58094-sismotecapi.apiary-mock.com/
 
 ## REST
-Sismo Tec API is a RESTful API:
-- It makes use of native concepts and techniques of HTTP
-- It follows the constraints of REST
-- It is defined in terms of endpoints and parameters
+Sismo Tec API es una RESTful API:
+- Hace uso de conceptos y técnicas nativas de HTTP
+- Sigue las restricciones de REST
+- Es definida en términos de endpoints y parámetros
 
 ## JSON
-The Sismo Tec API uses exclusively JSON, so you should always set the
-<strong>Content-type</strong> header to <strong>application/json</strong>. 
+Sismo Tec API usa de manera exclusiva JSON, así que debes de asegurarte de
+configurar el encabezado <strong>Content-type</strong> a
+<strong>application/json</strong>. 
 
 
 ## Sismo Tec API Root [/]
-This resource is our traditional "Hello World!".
+Este endpoint es nuestro tradicional "¡Hola Mundo!".
 
-### Get the entry point [GET]
+### Endpoint prueba [GET]
 
 + Response 200 (application/json; charset=utf-8)
 
     + Attributes
     
-        + message: 'Hello World! This is SismoTec API!' (string)
+        + mensaje: '¡Hola Mundo! Esto es SismoTec API!' (string)
+
+
+## Crear cuenta [/crear-cuenta]
+
+### Crear cuenta [POST]
+Crea una cuenta para un beneficiario o centro de acopio. Se necesita información 
+del nombre de la institución (opcional), nombre del responsable, correo del
+responsable, celular del responsable, latitud y longitud de la ubicación, una 
+contraseña y tipo.
+
++ Request (application/json)
+    
+    + Attributes
+    
+        + nombreInstitucion: `Tec de Monterrey Campus Monterrey` (string, required) 
+        Si se quiere crear una cuenta individual, mandar un string vacío.
+            
+        + nombreResponsable: `John Doe` (string, required)
+        
+        + emailResponsable: johndoe@tec.mx (string, required)
+            
+        + numeroResponsable: 5281828384 (number, required)
+        
+        + lat: 83.43 (number, required)
+        
+        + lon: 32.56 (number, required)
+            
+        + password: mypassword123 (string, required)
+        
+        + tipo: Centro de acopio (string, required)
+        Posibles valores: Centro de acopio, Beneficiario.
+
+
++ Response 201 (application/json; charset=utf-8)
+    
+    + Attributes
+    
+        + id: 2 (number, required)
+        
+        + tipo: Centro de acopio (string, required)
+
+
+## Iniciar sesión [/iniciar-sesion]
+
+### Iniciar sesión [POST]
+Iniciar sesión para un beneficiario. Se necesita información del celular del
+responsable y su contraseña.
+
++ Request (application/json)
+    
+    + Attributes
+
+        + emailResponsable: johndoe@tec.mx (string, required)
+
+        + password: mypassword123 (string, required)
+
+
++ Response 200 (application/json; charset=utf-8)
+    
+    + Attributes
+    
+        + id: 2 (number, required)
+        
+        + tipo: Centro de acopio (string, required)
+
+
+# Group Beneficiarios
+Endpoints relacionados a las acciones de un beneficiario.
+
+## Órdenes de envío [/beneficiarios/ordenes-envio]
+
+### Obtener órdenes de envíos [GET]
+Este endpoint permite obtener las órdenes de envío que espera un beneficiario.
+Se necesita el ID del beneficiario y la respuesta incluye un arreglo de órdenes
+de envío, donde cada órden tiene un arreglo de recursos.
+
++ Request (application/json)
+    
+    + Attributes
+    
+        + beneficiarioID: 2 (number, required)
+
+
++ Response 200 (application/json; charset=utf-8)
+    
+    + Attributes (array)
+    
+        + (Shipping Orders)
+
+
+## Necesidades [/beneficiarios/necesidades]
+
+### Crear necesidad [POST]
+Crea una nueva necesidad asociada a un beneficiario. Se necesita información de
+todos los recursos que contempla una necesidad.
+
++ Request (application/json)
+    
+    + Attributes
+    
+        + beneficiarioID: 2 (number, required)
+    
+        + recursos: Resource, Resource2 (array[Resource], required)
+
+
++ Response 201 (application/json; charset=utf-8)
+
+    + Attributes
+    
+        + necesidadID: 3 (number, required)
+
+
+### Obtener necesidades [GET]
+Obtener una lista de necesidades de todos o algunos beneficiarios. 
+Se necesita un arreglo que contiene los ID de los beneficiarios interesados
+en conocer sus necesidades. Si el arreglo está vacío se regresan todas las
+necesidades.
+
++ Request (application/json)
+    
+    + Attributes
+    
+        + beneficiariosID: 2, 5 (array[number], required)
+    
+
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+    
+        + necesidades: Necessity, Necessity2 (array[Necessity], required)
+
+
+### Confirmación de recibido [PUT]
+Confirma que una órden de envío ha sido recibida por el beneficiario.
+Se necesita el ID del beneficiario y el ID de la órden de envío.
+
++ Request (application/json)
+    
+    + Attributes
+    
+        + beneficiarioID: 2 (number, required)
+        
+        + ordenID: 1 (number, required)
+
+
++ Response 200 (application/json; charset=utf-8)
+
+
+# Group Centros de acopio
+Endpoints relacionados a las acciones de un centro de acopio.
+
+## Órdenes de envío [/centros-acopio/ordenes-envio]
+
+### Obtener órdenes de envíos [GET]
+Este endpoint permite obtener las órdenes de envío que ha mandado un centro de
+acopio. Se necesita el ID del centro de acopio y la respuesta incluye un arreglo 
+de órdenes de envío, donde cada órden tiene un arreglo de recursos.
+
++ Request (application/json)
+    
+    + Attributes
+    
+        + centroAcopioID: 6 (number, required)
+
+
++ Response 200 (application/json; charset=utf-8)
+    
+    + Attributes (array)
+    
+        + (Shipping Orders)
+
+
+### Crear órden de envío [POST]
+Este endpoint permite a un centro de acopio crear una órdenes de envío.
+Se necesita el ID del centro de acopio, un arreglo de recursos,
+el destino y el tiempo estimado.
+
++ Request (application/json)
+    
+    + Attributes
+    
+        + centroAcopioID: 6 (number, required)
+        
+        + recursos: Resource, Resource2 (array[Resource], required)
+        
+        + destinoLat: 21.34 (number, required)
+
+        + destinoLon: 23.45 (number, required)
+        
+        + tiempoEstimado: 1231 (number, required)
+        Número entero en milisegundos.
+
+
++ Response 201 (application/json; charset=utf-8)
+
+    + Attributes
+    
+        + ordenID: 5 (number, required)
+
+
+### Cancelar órdenes de envíos [DELETE]
+Este endpoint permite a un centro de acopio cancelar una órden de envío.
+Se necesita el ID de la órden de envío a cancelar.
+
++ Request (application/json)
+    
+    + Attributes
+    
+        + ordenID: 5 (number, required)
+
+
++ Response 200 (application/json; charset=utf-8)
+
+
+# Group Recursos
+Endpoints relacionados a los recursos.
+
+## Recursos [/recursos]
+
+### Obtener todos los recursos [GET]
+Este endpoint permite obtener todos los recursos disponibles.
+
+
++ Response 200 (application/json; charset=utf-8)
+    
+    + Attributes (array[ResourceStored])
+    
+        + (ResourceStored)
+            + id: 2 (number, required)
+
+            + nombre: Atún (string, required)
+
+            + categoria: Enlatados (string, required)
+
+            + unidad: Latas (string, required)
+
+# Group Necesidades
+Endpoints relacionados a las necesidades de beneficiarios y centros de acopio.
+
+## Necesidades locales [/necesidades/locales]
+
+### Obtener todas las necesidades locales [GET]
+Este endpoint permite obtener las necesidades que se encuentran cerca de
+una ubicación mandada. Se necesita la latitud y longitud de la ubicación.
+
++ Request (application/json)
+    
+    + Attributes
+    
+        + lat: 83.43 (number, required)
+        
+        + lon: 32.56 (number, required)
+
+
++ Response 200 (application/json; charset=utf-8)
+    
+    + Attributes (array)
+    
+        + (LocalNecessity)
+
+
+## Necesidades globales [/necesidades/globales]
+
+### Obtener todas las necesidades globales [GET]
+Este endpoint permite obtener las necesidades que se encuentran lejos de
+una ubicación mandada. Se necesita la latitud y longitud de la ubicación.
+
++ Request (application/json)
+    
+    + Attributes
+    
+        + lat: 83.43 (number, required)
+        
+        + lon: 32.56 (number, required)
+
+
++ Response 200 (application/json; charset=utf-8)
+    
+    + Attributes (array)
+    
+        + (LocalNecessity)
+
+
+# Data Structures
+
+## LocalNecessity
++ necesidadID: 2 (number, required)
+
++ propietarioID: 4 (number, required)
+
++ propietarioTipo: Centro de acopio (string, required)
+
++ lat: 83.43 (number, required)
+        
++ lon: 32.56 (number, required)
+
++ recursos: Resource, Resource2 (array[Resource], required)
+
+## Necessity
++ beneficiarioID: 2 (number, required)
+
++ recursos: Resource, Resource2 (array[Resource], required)
+
+## Necessity2
++ beneficiarioID: 4 (number, required)
+
++ recursos: Resource, Resource2 (array[Resource], required)
+
+## Resource
++ id: 1 (number, required)
+
++ cantidad: 50 (number, required)
+
+## Resource2
++ id: 4 (number, required)
+
++ cantidad: 20 (number, required)
+
+## ResourceStored
++ id: 4 (number, required)
+
++ nombre: Agua (string, required)
+
++ categoria: Bebidas (string, required)
+
++ unidad: Litros (string, required)
+
+## Shipping Orders
++ id: 1 (number, required)
+
++ origenLat: 45.44 (number, required)
+
++ origenLon: 51.23 (number, required)
+
++ destinoLat: 21.34 (number, required)
+
++ destinoLon: 23.45 (number, required)
+
++ estado: En camino (string, required)
+    Valores posibles: En camino, Enviado, Cancelado.
+    
++ recursos: Resource, Resource2 (array[Resource], required)
+
+
+    

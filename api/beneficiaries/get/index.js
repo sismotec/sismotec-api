@@ -1,5 +1,11 @@
+var models = require('../../../models');
+var Beneficiario = models.Beneficiario;
+
 let handler = (req, res) => {
-   res.send({message: 'Hit GET /beneficiares'});
+   Beneficiario.findAll()
+   .then(beneficiaries => {
+     res.send({beneficiarios: beneficiaries});
+   });
 };
 
 module.exports = {handler};
