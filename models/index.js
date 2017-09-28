@@ -33,8 +33,8 @@ models.forEach(function(model) {
   m.NecesidadBeneficiario.belongsTo(m.Beneficiario, {foreignKey: 'id_beneficiario'});
   m.Beneficiario.hasOne(m.NecesidadBeneficiario, {foreignKey: 'id_beneficiario'});
 
-  m.Recurso.belongsTo(m.Categoria, { foreignKey: 'categoria', targetKey: 'id'});
-  m.Categoria.hasMany(m.Recurso, {as: 'Recursos', foreignKey: 'categoria', sourceKey: 'id'});
+  m.Recurso.belongsTo(m.Categoria, { as: 'categoria', foreignKey: 'id_categoria', targetKey: 'id'});
+  m.Categoria.hasMany(m.Recurso, {as: 'Recursos', foreignKey: 'id_categoria', sourceKey: 'id'});
 
   m.Recurso.belongsTo(m.UnidadDeMedida, { foreignKey: 'id_unidad', targetKey: 'id'});
   m.UnidadDeMedida.hasMany(m.Recurso, {as: 'Recursos', foreignKey: 'id_unidad', sourceKey: 'id'});
