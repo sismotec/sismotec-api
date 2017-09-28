@@ -15,7 +15,7 @@ let handler = (req, res) => {
         .then(necesidad_b => {
           recursos_orden = []
           recursos.forEach(recurso => {
-            aux = 
+            aux = aux;
           });
           oe = OrdenEnvio.build({})
         });
