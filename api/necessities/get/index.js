@@ -1,5 +1,5 @@
 const models = require('../../../models');
-const {NecesidadAcopio, NecesidadBeneficiario, Recurso, UnidadDeMedida, CentroDeAcopio} = models;
+const {NecesidadAcopio, NecesidadBeneficiario, Recurso, UnidadDeMedida, CentroDeAcopio, Beneficiario} = models;
 
 //Regresar todas las necesidades locales
 
@@ -11,12 +11,34 @@ let handler = (req, res) => {
 
 	//Get all necessities
 	if(lat == null || long == null){
-		NecesidadAcopio.findAll({include: [{model: CentroDeAcopio, as: 'centro_de_acopio'}, {model: Recurso, as: 'recursos'}]})
+		NecesidadAcopio.findAll({include: [{model: CentroDeAcopio, as: 'centro_de_acopio'}, {model: Recurso, as: 'recurso'}]})
 		.then(necessities_acopio => {
-			NecesidadBeneficiario.findAll()
+			NecesidadBeneficiario.findAll({include: [{model: Beneficiario, as: 'beneficiario'}]}, {model: Recurso, as: 'recurso'})
 			.then(necessities_beneficiario => {
-				
-				res.send({necessities: necessities_acopio});
+				var necessities = [];
+
+				for(var i = 0; i < necessities_acopio.length; ++i){
+					necessities.push({
+						id_necesidad: necessities_acopio[i].id,
+						id_propietario: necessities_acopio[i]['centro_de_acopio'].id,
+						propetario_tipo: 'Centro de acopio',
+						latitud: necessities_acopio[i]['centro_de_acopio'].latitud,
+						longitud: necessities_acopio[i]['centro_de_acopio'].longitud,
+						recursos: 'recurso'
+					});
+				}
+
+				for(var i = 0; i < necessities_beneficiario.length; ++i){
+					necessities.push({
+						id_necesidad: necessities_beneficiario[i].id,
+						id_propietario: necessities_beneficiario[i]['beneficiario'].id,
+						propetario_tipo: 'Beneficiario',
+						latitud: necessities_beneficiario[i]['beneficiario'].latitud,
+						longitud: necessities_beneficiario[i]['beneficiario'].longitud,
+						recursos: 'recurso'
+					});
+				}
+				res.send({necessities: necessities});
 			});
 		});
 	}else{
