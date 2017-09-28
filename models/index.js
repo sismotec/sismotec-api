@@ -27,17 +27,23 @@ models.forEach(function(model) {
 // describe relationships
 (function(m) {
 
-  m.NecesidadAcopio.belongsTo(m.CentroDeAcopio, {foreignKey: 'id_centro_acopio'});
-  m.CentroDeAcopio.hasOne(m.NecesidadAcopio, {foreignKey: 'id_centro_acopio'});
+  m.NecesidadAcopio.belongsTo(m.CentroDeAcopio, {as: 'centro_acopio', foreignKey: 'id_centro_acopio'});
+  m.CentroDeAcopio.hasOne(m.NecesidadAcopio, {as: 'necesidad_acopio', foreignKey: 'id_centro_acopio'});
 
-  m.NecesidadBeneficiario.belongsTo(m.Beneficiario, {foreignKey: 'id_beneficiario'});
-  m.Beneficiario.hasOne(m.NecesidadBeneficiario, {foreignKey: 'id_beneficiario'});
+  m.NecesidadBeneficiario.belongsTo(m.Beneficiario, {as: 'beneficiario', foreignKey: 'id_beneficiario'});
+  m.Beneficiario.hasOne(m.NecesidadBeneficiario, {as: 'necesidad_beneficiario', foreignKey: 'id_beneficiario'});
 
   m.Recurso.belongsTo(m.Categoria, { as: 'categoria', foreignKey: 'id_categoria', targetKey: 'id'});
   m.Categoria.hasMany(m.Recurso, {as: 'recursos', foreignKey: 'id_categoria', sourceKey: 'id'});
 
   m.Recurso.belongsTo(m.UnidadDeMedida, { foreignKey: 'id_unidad', targetKey: 'id'});
   m.UnidadDeMedida.hasMany(m.Recurso, {as: 'recursos', foreignKey: 'id_unidad', sourceKey: 'id'});
+
+  m.CantidadBeneficiarioRecurso.belongsTo(m.Recurso, { foreignKey: 'id_recurso', targetKey: 'id'});
+  m.Recurso.hasMany(m.CantidadBeneficiarioRecurso, { as: "cantidad_beneficiario_recurso", foreignKey: 'id_recurso', targetKey: 'id'});
+
+  m.NecesidadBeneficiario.belongsTo(m.Recurso, { foreignKey: 'id_necesidad_beneficiario', targetKey: 'id'});
+  m.Recurso.hasMany(m.NecesidadBeneficiario, {as: "necesidad_beneficiario", foreignKey: 'id_necesidad_beneficiario', targetKey: 'id'});
 
   m.OrdenEnvio.belongsTo(m.CentroDeAcopio, { foreignKey: 'id_acopio', targetKey: 'id'});
   m.CentroDeAcopio.hasMany(m.OrdenEnvio, {as: 'ordenes_de_envio', foreignKey: 'id_acopio', sourceKey: 'id'});
