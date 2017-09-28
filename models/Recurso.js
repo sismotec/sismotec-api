@@ -9,7 +9,7 @@ module.exports = function(sequelize, DataTypes) {
     nombre: {
       type: Sequelize.STRING
     },
-    categoria: {
+    id_categoria: {
       type: Sequelize.INTEGER
     },
     id_unidad: {
