@@ -6,7 +6,7 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true,
       autoIncrement: true
     },
-    nombre_Instituto: {
+    nombre_instituto: {
       type: Sequelize.STRING
     },
     celular: {
@@ -21,7 +21,7 @@ module.exports = function(sequelize, DataTypes) {
     password: {
       type: Sequelize.STRING
     },
-    nombre_Responsable: {
+    nombre_responsable: {
       type: Sequelize.STRING
     },
     email: {
