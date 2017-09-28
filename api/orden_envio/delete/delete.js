@@ -1,5 +1,5 @@
 const models = require('../../../models');
-const {OrdenEnvio, CentroDeAcopio, NecesidadBeneficiario, RecursoOrden} = models;
+const {OrdenEnvio, RecursoOrden} = models;
 
 let handler = (req, res) => {
 	id_orden = req.body.id_orden
@@ -11,26 +11,11 @@ let handler = (req, res) => {
 		OrdenEnvio.findById(id_orden).then(orden => {
 			res.send({id_orden: orden});
 		});
-		
- 	// OrdenEnvio.destroy({
-	//   where: {
-	//     id: id_orden
-	//   }
-	// });
-
-	// RecursoOrden.destroy({
-	// 	where: {
-	// 		id_orden: id_orden_recurso
-	// 	}
-	// });
-
+		OrdenEnvio.findById(id_orden).then(order => { 
+			order.update({
+				status: 'cancelado',
+			});
+		});
 	}
-
-    
-
 };
-
-
 module.exports = {handler};
-
-
