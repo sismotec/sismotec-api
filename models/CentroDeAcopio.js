@@ -12,10 +12,10 @@ module.exports = function(sequelize, DataTypes) {
     longitud: {
       type: Sequelize.DOUBLE
     },
-    organizacion: {
+    nombre_organizacion: {
       type: Sequelize.STRING
     },
-    responsable: {
+    nombre_responsable: {
       type: Sequelize.STRING
     },
     celular: {
@@ -28,6 +28,9 @@ module.exports = function(sequelize, DataTypes) {
       type: Sequelize.STRING
     },
     estado: {
+      type: Sequelize.STRING
+    },
+    password: {
       type: Sequelize.STRING
     }
   }, {
