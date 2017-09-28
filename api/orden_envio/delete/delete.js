@@ -1,25 +1,33 @@
 const models = require('../../../models');
 const {OrdenEnvio, CentroDeAcopio, NecesidadBeneficiario, RecursoOrden} = models;
 
-OrdenEnvio.findAll({
-	attributes: ['id']
-});
-
 let handler = (req, res) => {
-   OrdenEnvio.findAll({
-   	attributes: ['id']
-   });
+	id_orden = req.body.id_orden
+	id_orden_recurso = req.body.id_orden
 
-   RecursoOrden.findAll({
-   	attributes: ['id']
-   });
+	if(id_orden == null){
+		res.send({code: 404, message: 'Order not found'});	
+	}else{
+		OrdenEnvio.findById(id_orden).then(orden => {
+			res.send({id_orden: orden});
+		});
+		
+ 	// OrdenEnvio.destroy({
+	//   where: {
+	//     id: id_orden
+	//   }
+	// });
 
-   
+	// RecursoOrden.destroy({
+	// 	where: {
+	// 		id_orden: id_orden_recurso
+	// 	}
+	// });
 
-   CentroDeAcopio.findById(1)
-   .then(ca => {
-     res.send({centro: ca});
-   });
+	}
+
+    
+
 };
 
 
