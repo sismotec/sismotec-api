@@ -6,7 +6,7 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true,
       autoIncrement: true
     },
-    id_centroAcopio: {
+    id_centro_acopio: {
       type: Sequelize.INTEGER
     }
   }, {

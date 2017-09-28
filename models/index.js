@@ -27,8 +27,8 @@ models.forEach(function(model) {
 // describe relationships
 (function(m) {
 
-  m.NecesidadAcopio.belongsTo(m.CentroDeAcopio, {foreignKey: 'id_centroAcopio'});
-  m.CentroDeAcopio.hasOne(m.NecesidadAcopio, {foreignKey: 'id_centroAcopio'});
+  m.NecesidadAcopio.belongsTo(m.CentroDeAcopio, {foreignKey: 'id_centro_acopio'});
+  m.CentroDeAcopio.hasOne(m.NecesidadAcopio, {foreignKey: 'id_centro_acopio'});
 
   m.NecesidadBeneficiario.belongsTo(m.Beneficiario, {foreignKey: 'id_beneficiario'});
   m.Beneficiario.hasOne(m.NecesidadBeneficiario, {foreignKey: 'id_beneficiario'});
@@ -55,7 +55,7 @@ models.forEach(function(model) {
   m.CentroDeAcopio.belongsToMany(m.Recurso, {as: 'RecursosEnInventario', through: 'Inventario', foreignKey: 'id_centro_acopio'});
 
   m.Recurso.belongsToMany(m.NecesidadAcopio, {as: 'NecesitadoEnCentros', through: 'CantidadAcopioRecurso', foreignKey: 'id_recurso'});
-  m.NecesidadAcopio.belongsToMany(m.Recurso, {as: 'RecursosNecesitados', through: 'CantidadAcopioRecurso', foreignKey: 'id_necesidad_acopio'});
+  m.NecesidadAcopio.belongsToMany(m.Recurso, {as: 'recursos', through: 'CantidadAcopioRecurso', foreignKey: 'id_necesidad_acopio'});
 
   m.Recurso.belongsToMany(m.NecesidadBeneficiario, {as: 'NecesitadoPorBeneficiarios', through: 'CantidadBeneficiarioRecurso', foreignKey: 'id_recurso'});
   m.NecesidadBeneficiario.belongsToMany(m.Recurso, {as: 'RecursosNecesitados', through: 'CantidadBeneficiarioRecurso', foreignKey: 'id_necesidad_beneficiario'});
