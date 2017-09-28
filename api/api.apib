@@ -40,7 +40,7 @@ Este endpoint es nuestro tradicional "¡Hola Mundo!".
 
 ### Crear cuenta [POST]
 Crea una cuenta para un beneficiario o centro de acopio. Se necesita información 
-del nombre de la institución (opcional), nombre del responsable, correo del
+del nombre de la organización, nombre del responsable, correo del
 responsable, celular del responsable, latitud y longitud de la ubicación, una 
 contraseña y tipo.
 
@@ -48,18 +48,18 @@ contraseña y tipo.
     
     + Attributes
     
-        + nombreInstitucion: `Tec de Monterrey Campus Monterrey` (string, required) 
+        + nombre_organizacion: `Tec de Monterrey Campus Monterrey` (string, required) 
         Si se quiere crear una cuenta individual, mandar un string vacío.
             
-        + nombreResponsable: `John Doe` (string, required)
+        + nombre_responsable: `John Doe` (string, required)
         
-        + emailResponsable: johndoe@tec.mx (string, required)
+        + email: johndoe@tec.mx (string, required)
             
-        + numeroResponsable: 5281828384 (number, required)
+        + celular: 5281828384 (number, required)
         
-        + lat: 83.43 (number, required)
+        + latitud: 83.43 (number, required)
         
-        + lon: 32.56 (number, required)
+        + longitud: 32.56 (number, required)
             
         + password: mypassword123 (string, required)
         
@@ -86,7 +86,7 @@ responsable y su contraseña.
     
     + Attributes
 
-        + emailResponsable: johndoe@tec.mx (string, required)
+        + email: johndoe@tec.mx (string, required)
 
         + password: mypassword123 (string, required)
 
@@ -103,18 +103,16 @@ responsable y su contraseña.
 # Group Beneficiarios
 Endpoints relacionados a las acciones de un beneficiario.
 
-## Órdenes de envío [/beneficiarios/ordenes-envio]
+## Órdenes de envío [/beneficiarios/ordenes-envio/{id_beneficiario}]
 
 ### Obtener órdenes de envíos [GET]
 Este endpoint permite obtener las órdenes de envío que espera un beneficiario.
 Se necesita el ID del beneficiario y la respuesta incluye un arreglo de órdenes
 de envío, donde cada órden tiene un arreglo de recursos.
 
-+ Request (application/json)
-    
-    + Attributes
-    
-        + beneficiarioID: 2 (number, required)
++ Parameters
+
+  + id_beneficiario: 2 (number, required)
 
 
 + Response 200 (application/json; charset=utf-8)
@@ -134,7 +132,7 @@ todos los recursos que contempla una necesidad.
     
     + Attributes
     
-        + beneficiarioID: 2 (number, required)
+        + id_beneficiario: 2 (number, required)
     
         + recursos: Resource, Resource2 (array[Resource], required)
 
@@ -143,7 +141,7 @@ todos los recursos que contempla una necesidad.
 
     + Attributes
     
-        + necesidadID: 3 (number, required)
+        + id_necesidad: 3 (number, required)
 
 
 ### Obtener necesidades [GET]
@@ -156,7 +154,7 @@ necesidades.
     
     + Attributes
     
-        + beneficiariosID: 2, 5 (array[number], required)
+        + id_beneficiarios: 2, 5 (array[number], required)
     
 
 
@@ -175,9 +173,9 @@ Se necesita el ID del beneficiario y el ID de la órden de envío.
     
     + Attributes
     
-        + beneficiarioID: 2 (number, required)
+        + id_beneficiario: 2 (number, required)
         
-        + ordenID: 1 (number, required)
+        + id_orden: 1 (number, required)
 
 
 + Response 200 (application/json; charset=utf-8)
@@ -186,18 +184,17 @@ Se necesita el ID del beneficiario y el ID de la órden de envío.
 # Group Centros de acopio
 Endpoints relacionados a las acciones de un centro de acopio.
 
-## Órdenes de envío [/centros-acopio/ordenes-envio]
+## Órdenes de envío [/centros-acopio/ordenes-envio/{id_centro_acopio}]
 
 ### Obtener órdenes de envíos [GET]
 Este endpoint permite obtener las órdenes de envío que ha mandado un centro de
 acopio. Se necesita el ID del centro de acopio y la respuesta incluye un arreglo 
 de órdenes de envío, donde cada órden tiene un arreglo de recursos.
 
-+ Request (application/json)
-    
-    + Attributes
-    
-        + centroAcopioID: 6 (number, required)
+
++ Parameters
+
+  + id_centro_acopio: 6 (number, required)
 
 
 + Response 200 (application/json; charset=utf-8)
@@ -216,15 +213,17 @@ el destino y el tiempo estimado.
     
     + Attributes
     
-        + centroAcopioID: 6 (number, required)
+        + id_centro_acopio: 6 (number, required)
+        
+        + id_necesidad: 1 (number, required)
         
         + recursos: Resource, Resource2 (array[Resource], required)
         
-        + destinoLat: 21.34 (number, required)
+        + destino_latitud: 21.34 (number, required)
 
-        + destinoLon: 23.45 (number, required)
+        + destino_longitud: 23.45 (number, required)
         
-        + tiempoEstimado: 1231 (number, required)
+        + tiempo_estimado: 1231 (number, required)
         Número entero en milisegundos.
 
 
@@ -232,7 +231,7 @@ el destino y el tiempo estimado.
 
     + Attributes
     
-        + ordenID: 5 (number, required)
+        + id_orden: 5 (number, required)
 
 
 ### Cancelar órdenes de envíos [DELETE]
@@ -243,7 +242,7 @@ Se necesita el ID de la órden de envío a cancelar.
     
     + Attributes
     
-        + ordenID: 5 (number, required)
+        + id_orden: 5 (number, required)
 
 
 + Response 200 (application/json; charset=utf-8)
@@ -274,41 +273,21 @@ Este endpoint permite obtener todos los recursos disponibles.
 # Group Necesidades
 Endpoints relacionados a las necesidades de beneficiarios y centros de acopio.
 
-## Necesidades locales [/necesidades/locales]
+## Necesidades [/necesidades]
 
-### Obtener todas las necesidades locales [GET]
-Este endpoint permite obtener las necesidades que se encuentran cerca de
-una ubicación mandada. Se necesita la latitud y longitud de la ubicación.
-
-+ Request (application/json)
-    
-    + Attributes
-    
-        + lat: 83.43 (number, required)
-        
-        + lon: 32.56 (number, required)
-
-
-+ Response 200 (application/json; charset=utf-8)
-    
-    + Attributes (array)
-    
-        + (LocalNecessity)
-
-
-## Necesidades globales [/necesidades/globales]
-
-### Obtener todas las necesidades globales [GET]
-Este endpoint permite obtener las necesidades que se encuentran lejos de
-una ubicación mandada. Se necesita la latitud y longitud de la ubicación.
+### Obtener todas las necesidades [GET]
+Este endpoint permite obtener las necesidades locales o globales.
+Si necesitas obtener las necesidades locales (cercanas a cierta ubicación) debes
+de mandar la latitud y longitud de la ubicación. Si necesitas las necesidades
+globales (todas), no mandes latitud y longitud.
 
 + Request (application/json)
     
     + Attributes
     
-        + lat: 83.43 (number, required)
+        + latitud: 83.43 (number)
         
-        + lon: 32.56 (number, required)
+        + longitud: 32.56 (number)
 
 
 + Response 200 (application/json; charset=utf-8)
@@ -321,25 +300,25 @@ una ubicación mandada. Se necesita la latitud y longitud de la ubicación.
 # Data Structures
 
 ## LocalNecessity
-+ necesidadID: 2 (number, required)
++ id_necesidad: 2 (number, required)
 
-+ propietarioID: 4 (number, required)
++ id_propietario: 4 (number, required)
 
-+ propietarioTipo: Centro de acopio (string, required)
++ propietario_tipo: Centro de acopio (string, required)
 
-+ lat: 83.43 (number, required)
++ latitud: 83.43 (number, required)
         
-+ lon: 32.56 (number, required)
++ longitud: 32.56 (number, required)
 
 + recursos: Resource, Resource2 (array[Resource], required)
 
 ## Necessity
-+ beneficiarioID: 2 (number, required)
++ id_beneficiario: 2 (number, required)
 
 + recursos: Resource, Resource2 (array[Resource], required)
 
 ## Necessity2
-+ beneficiarioID: 4 (number, required)
++ id_beneficiario: 4 (number, required)
 
 + recursos: Resource, Resource2 (array[Resource], required)
 
@@ -365,16 +344,19 @@ una ubicación mandada. Se necesita la latitud y longitud de la ubicación.
 ## Shipping Orders
 + id: 1 (number, required)
 
-+ origenLat: 45.44 (number, required)
++ origen_latitud: 45.44 (number, required)
 
-+ origenLon: 51.23 (number, required)
++ origen_longitud: 51.23 (number, required)
 
-+ destinoLat: 21.34 (number, required)
++ destino_latitud: 21.34 (number, required)
 
-+ destinoLon: 23.45 (number, required)
++ destino_longitud: 23.45 (number, required)
 
 + estado: En camino (string, required)
     Valores posibles: En camino, Enviado, Cancelado.
+    
++ fecha_creacion: `2017-05-10T14:59:50Z`(string, required)
+    Fecha y hoa siguiendo el estándar ISO 8601: "YYYY-MM-DDTHH:MM:SSZ",
     
 + recursos: Resource, Resource2 (array[Resource], required)
 
