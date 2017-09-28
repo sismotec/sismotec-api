@@ -29,6 +29,9 @@ module.exports = function(sequelize, DataTypes) {
     },
     estado: {
       type: Sequelize.STRING
+    },
+    password: {
+      type: Sequelize.STRING
     }
   }, {
   timestamps: false,

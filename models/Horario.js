@@ -6,13 +6,13 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true,
       autoIncrement: true
     },
-    id_acopio: {
+    id_centro_acopio: {
       type: Sequelize.INTEGER
     },
-    horaInicio: {
+    hora_inicio: {
       type: Sequelize.STRING
     },
-    horaFin: {
+    hora_fin: {
       type: Sequelize.STRING
     },
     dia: {

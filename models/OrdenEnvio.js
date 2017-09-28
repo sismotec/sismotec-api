@@ -6,7 +6,7 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true,
       autoIncrement: true
     },
-    id_acopio: {
+    id_centro_acopio: {
       type: Sequelize.INTEGER
     },
     id_necesidad_beneficiario: {
@@ -25,6 +25,9 @@ module.exports = function(sequelize, DataTypes) {
       type: Sequelize.STRING
     },
     tiempo_estimado: {
+      type: Sequelize.DATE
+    },
+    fecha_creacion: {
       type: Sequelize.DATE
     }
   }, {
