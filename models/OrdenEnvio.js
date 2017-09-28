@@ -26,6 +26,9 @@ module.exports = function(sequelize, DataTypes) {
     },
     tiempo_estimado: {
       type: Sequelize.DATE
+    },
+    fecha_creacion: {
+      type: Sequelize.DATE
     }
   }, {
   timestamps: false,
