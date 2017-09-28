@@ -15,8 +15,9 @@
   "dependencies": {
     "body-parser": "1.17.1",
     "express": "^4.15.5",
+    "geocoder": "^0.2.3",
     "mysql2": "^1.4.2",
     "nodemon": "^1.12.1",
-    "sequelize": "^4.11.1"
+    "sequelize": "^4.11.3"
   }
 }
