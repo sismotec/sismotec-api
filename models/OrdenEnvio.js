@@ -12,14 +12,20 @@ module.exports = function(sequelize, DataTypes) {
     id_necesidad_beneficiario: {
       type: Sequelize.INTEGER
     },
-    destino: {
-      type: Sequelize.STRING
+    destino_latitud: {
+      type: Sequelize.DOUBLE
+    },
+    destino_longitud: {
+      type: Sequelize.DOUBLE
     },
     fecha_salida: {
       type: Sequelize.DATE
     },
-    origen: {
-      type: Sequelize.STRING
+    origen_latitud: {
+      type: Sequelize.DOUBLE
+    },
+    origen_longitud: {
+      type: Sequelize.DOUBLE
     },
     status: {
       type: Sequelize.STRING
