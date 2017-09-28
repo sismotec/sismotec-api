@@ -12,5 +12,11 @@ module.exports = function(sequelize, DataTypes) {
     id_centro_acopio: {
       type: Sequelize.INTEGER
     }
-  });
+  }, {
+  timestamps: false,
+  // disable the modification of tablenames; By default, sequelize will automatically
+  // transform all passed model names (first parameter of define) into plural.
+  // if you don't want that, set the following
+  freezeTableName: true
+});
 };

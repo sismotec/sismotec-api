@@ -5,7 +5,9 @@
   "repository": "https://github.com/sismotec/sismotec-api.git",
   "author": "Fernando Lopez Martinez <fer.lopez94@outlook.com>",
   "license": "MIT",
-  "engines": {},
+  "engines": {
+    "node": "v6.10.0"
+  },
   "scripts": {
     "start": "node server.js",
     "start-watch": "nodemon --exec \"yarn run start\""
