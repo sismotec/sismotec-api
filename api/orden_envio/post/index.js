@@ -10,10 +10,9 @@ let handler = (req, res) => {
     if(ca){
       NecesidadBeneficiario.findById(id_necesidad, { include: [{model: Beneficiario, as: 'beneficiario'}] })
       .then(necesidad_b => {
-        console.log("lol");
+        console.log(req.body);
         if(necesidad_b){
           return sequelize.transaction(function (t) {
-
             // chain all your queries here. make sure you return them.
             return OrdenEnvio.create({
               id_centro_acopio: id_centro_acopio,
@@ -23,7 +22,7 @@ let handler = (req, res) => {
               origen_latitud: necesidad_b.beneficiario.latitud,
               origen_longitud: necesidad_b.beneficiario.longitud,
               tiempo_estimado: tiempo_estimado,
-              status: 'En camino',
+              status: 'en camino',
               fecha_creacion: new Date()
             }, {transaction: t}).then(function (orden) {
               order_id = orden.id
