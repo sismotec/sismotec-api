@@ -27,41 +27,41 @@ models.forEach(function(model) {
 // describe relationships
 (function(m) {
 
-  m.NecesidadAcopio.belongsTo(m.CentroDeAcopio, {foreignKey: 'id_centroAcopio'});
-  m.CentroDeAcopio.hasOne(m.NecesidadAcopio, {foreignKey: 'id_centroAcopio'});
+  m.NecesidadAcopio.belongsTo(m.CentroDeAcopio, {foreignKey: 'id_centro_acopio'});
+  m.CentroDeAcopio.hasOne(m.NecesidadAcopio, {foreignKey: 'id_centro_acopio'});
 
   m.NecesidadBeneficiario.belongsTo(m.Beneficiario, {foreignKey: 'id_beneficiario'});
   m.Beneficiario.hasOne(m.NecesidadBeneficiario, {foreignKey: 'id_beneficiario'});
 
   m.Recurso.belongsTo(m.Categoria, { as: 'categoria', foreignKey: 'id_categoria', targetKey: 'id'});
-  m.Categoria.hasMany(m.Recurso, {as: 'Recursos', foreignKey: 'id_categoria', sourceKey: 'id'});
+  m.Categoria.hasMany(m.Recurso, {as: 'recursos', foreignKey: 'id_categoria', sourceKey: 'id'});
 
   m.Recurso.belongsTo(m.UnidadDeMedida, { foreignKey: 'id_unidad', targetKey: 'id'});
-  m.UnidadDeMedida.hasMany(m.Recurso, {as: 'Recursos', foreignKey: 'id_unidad', sourceKey: 'id'});
+  m.UnidadDeMedida.hasMany(m.Recurso, {as: 'recursos', foreignKey: 'id_unidad', sourceKey: 'id'});
 
   m.OrdenEnvio.belongsTo(m.CentroDeAcopio, { foreignKey: 'id_acopio', targetKey: 'id'});
-  m.CentroDeAcopio.hasMany(m.OrdenEnvio, {as: 'OrdenesDeEnvio', foreignKey: 'id_acopio', sourceKey: 'id'});
+  m.CentroDeAcopio.hasMany(m.OrdenEnvio, {as: 'ordenes_de_envio', foreignKey: 'id_acopio', sourceKey: 'id'});
 
   m.OrdenEnvio.belongsTo(m.NecesidadBeneficiario, { foreignKey: 'id_necesidad_beneficiario', targetKey: 'id'});
-  m.NecesidadBeneficiario.hasMany(m.OrdenEnvio, {as: 'OrdenesDeEnvio', foreignKey: 'id_necesidad_beneficiario', sourceKey: 'id'});
+  m.NecesidadBeneficiario.hasMany(m.OrdenEnvio, {as: 'ordenes_de_envio', foreignKey: 'id_necesidad_beneficiario', sourceKey: 'id'});
 
   m.Horario.belongsTo(m.CentroDeAcopio, { foreignKey: 'id_acopio', targetKey: 'id'});
-  m.CentroDeAcopio.hasMany(m.Horario, {as: 'Horarios', foreignKey: 'id_acopio', sourceKey: 'id'});
+  m.CentroDeAcopio.hasMany(m.Horario, {as: 'horarios', foreignKey: 'id_acopio', sourceKey: 'id'});
 
-  m.Recurso.belongsToMany(m.OrdenEnvio, {as: 'EnviadoEnOrdenes', through: 'RecursoOrden', foreignKey: 'id_recurso'});
-  m.OrdenEnvio.belongsToMany(m.Recurso, {as: 'Recursos', through: 'RecursoOrden', foreignKey: 'id_orden'});
+  m.Recurso.belongsToMany(m.OrdenEnvio, {as: 'ordenes_de_envio', through: 'RecursoOrden', foreignKey: 'id_recurso'});
+  m.OrdenEnvio.belongsToMany(m.Recurso, {as: 'recursos', through: 'RecursoOrden', foreignKey: 'id_orden'});
 
-  m.Recurso.belongsToMany(m.CentroDeAcopio, {as: 'InventariadoEnCentros', through: 'Inventario', foreignKey: 'id_recurso'});
-  m.CentroDeAcopio.belongsToMany(m.Recurso, {as: 'RecursosEnInventario', through: 'Inventario', foreignKey: 'id_centro_acopio'});
+  m.Recurso.belongsToMany(m.CentroDeAcopio, {as: 'centros_de_acopio', through: 'Inventario', foreignKey: 'id_recurso'});
+  m.CentroDeAcopio.belongsToMany(m.Recurso, {as: 'recursos', through: 'Inventario', foreignKey: 'id_centro_acopio'});
 
-  m.Recurso.belongsToMany(m.NecesidadAcopio, {as: 'NecesitadoEnCentros', through: 'CantidadAcopioRecurso', foreignKey: 'id_recurso'});
-  m.NecesidadAcopio.belongsToMany(m.Recurso, {as: 'RecursosNecesitados', through: 'CantidadAcopioRecurso', foreignKey: 'id_necesidad_acopio'});
+  m.Recurso.belongsToMany(m.NecesidadAcopio, {as: 'necesidades_acopio', through: 'CantidadAcopioRecurso', foreignKey: 'id_recurso'});
+  m.NecesidadAcopio.belongsToMany(m.Recurso, {as: 'recursos', through: 'CantidadAcopioRecurso', foreignKey: 'id_necesidad_acopio'});
 
-  m.Recurso.belongsToMany(m.NecesidadBeneficiario, {as: 'NecesitadoPorBeneficiarios', through: 'CantidadBeneficiarioRecurso', foreignKey: 'id_recurso'});
-  m.NecesidadBeneficiario.belongsToMany(m.Recurso, {as: 'RecursosNecesitados', through: 'CantidadBeneficiarioRecurso', foreignKey: 'id_necesidad_beneficiario'});
+  m.Recurso.belongsToMany(m.NecesidadBeneficiario, {as: 'necesesidades_beneficiarios', through: 'CantidadBeneficiarioRecurso', foreignKey: 'id_recurso'});
+  m.NecesidadBeneficiario.belongsToMany(m.Recurso, {as: 'recursos', through: 'CantidadBeneficiarioRecurso', foreignKey: 'id_necesidad_beneficiario'});
 
-  m.NecesidadBeneficiario.belongsToMany(m.CentroDeAcopio, {as: 'FavoritaEnCentros', through: 'favoritos', foreignKey: 'id_necesidad_beneficiario'});
-  m.CentroDeAcopio.belongsToMany(m.NecesidadBeneficiario, {as: 'NecesidadesFavoritas', through: 'favoritos', foreignKey: 'id_centro_acopio'});
+  m.NecesidadBeneficiario.belongsToMany(m.CentroDeAcopio, {as: 'centros_de_acopio', through: 'favoritos', foreignKey: 'id_necesidad_beneficiario'});
+  m.CentroDeAcopio.belongsToMany(m.NecesidadBeneficiario, {as: 'necesesidades_beneficiarios', through: 'favoritos', foreignKey: 'id_centro_acopio'});
 })(module.exports);
 
 // export connection
