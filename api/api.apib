@@ -122,11 +122,11 @@ de envío, donde cada órden tiene un arreglo de recursos.
         + (Shipping Orders)
 
 
-## Necesidades [/beneficiarios/necesidades]
+## Necesidades [/beneficiarios/necesidades{?id_beneficiarios}]
 
 ### Crear necesidad [POST]
 Crea una nueva necesidad asociada a un beneficiario. Se necesita información de
-todos los recursos que contempla una necesidad.
+todos los recursos que contempla una necesidad y el ID del beneficiario.
 
 + Request (application/json)
     
@@ -150,30 +150,47 @@ Se necesita un arreglo que contiene los ID de los beneficiarios interesados
 en conocer sus necesidades. Si el arreglo está vacío se regresan todas las
 necesidades.
 
-+ Request (application/json)
-    
-    + Attributes
-    
-        + id_beneficiarios: 2, 5 (array[number], required)
-    
++ Parameters
+
+  + id_beneficiarios: 2,4 (array[number], required)
 
 
 + Response 200 (application/json; charset=utf-8)
 
-    + Attributes
+    + Attributes (array[Necessity])
     
-        + necesidades: Necessity, Necessity2 (array[Necessity], required)
+        + (Necessity2)
 
 
-### Confirmación de recibido [PUT]
-Confirma que una órden de envío ha sido recibida por el beneficiario.
-Se necesita el ID del beneficiario y el ID de la órden de envío.
+### Editar necesidad [PUT]
+Edita una necesidad asociada a un beneficiario. Se necesita información de
+todos los recursos que contempla la necesidad y el ID del beneficiario.
 
 + Request (application/json)
     
     + Attributes
     
         + id_beneficiario: 2 (number, required)
+    
+        + recursos: Resource, Resource2 (array[Resource], required)
+
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes
+    
+        + id_necesidad: 3 (number, required)
+
+
+## Confirmar Necesidades [/beneficiarios/necesidades/confirmar]
+
+### Confirmación de recibido [PUT]
+Confirma que una órden de envío ha sido recibida por el beneficiario.
+Se necesita el ID de la órden de envío.
+
++ Request (application/json)
+    
+    + Attributes
         
         + id_orden: 1 (number, required)
 
@@ -184,9 +201,9 @@ Se necesita el ID del beneficiario y el ID de la órden de envío.
 # Group Centros de acopio
 Endpoints relacionados a las acciones de un centro de acopio.
 
-## Órdenes de envío [/centros-acopio/ordenes-envio/{id_centro_acopio}]
+## Órdenes de envío [/centros-acopio/ordenes-envio/]
 
-### Obtener órdenes de envíos [GET]
+### Obtener órdenes de envíos [GET /centros-acopio/ordenes-envio/{id_centro_acopio}]
 Este endpoint permite obtener las órdenes de envío que ha mandado un centro de
 acopio. Se necesita el ID del centro de acopio y la respuesta incluye un arreglo 
 de órdenes de envío, donde cada órden tiene un arreglo de recursos.
@@ -206,8 +223,9 @@ de órdenes de envío, donde cada órden tiene un arreglo de recursos.
 
 ### Crear órden de envío [POST]
 Este endpoint permite a un centro de acopio crear una órdenes de envío.
-Se necesita el ID del centro de acopio, un arreglo de recursos,
-el destino y el tiempo estimado.
+Se necesita el ID del centro de acopio, el ID de la necesidad, un arreglo 
+de recursos, latitud y longitud del destino y el tiempo estimado.
+
 
 + Request (application/json)
     
@@ -248,6 +266,66 @@ Se necesita el ID de la órden de envío a cancelar.
 + Response 200 (application/json; charset=utf-8)
 
 
+## Necesidades [/centros-acopio/necesidades{?id_centros_acopio}]
+
+### Crear necesidad [POST]
+Crea una nueva necesidad asociada a un centro de acopio. Se necesita información 
+de todos los recursos que contempla una necesidad y el ID del centro de acopio.
+
++ Request (application/json)
+    
+    + Attributes
+    
+        + id_centro_acopio: 2 (number, required)
+    
+        + recursos: Resource, Resource2 (array[Resource], required)
+
+
++ Response 201 (application/json; charset=utf-8)
+
+    + Attributes
+    
+        + id_necesidad: 3 (number, required)
+
+
+### Obtener necesidades [GET]
+Obtener una lista de necesidades de todos o algunos centros de acopio. 
+Se necesita un arreglo que contiene los ID de los centros de acopio interesados
+en conocer sus necesidades. Si el arreglo está vacío se regresan todas las
+necesidades.
+
++ Parameters
+
+  + id_centros_acopio: 2,4 (array[number], required)
+
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes (array[NecessityCentroAcopio])
+    
+        + (NecessityCentroAcopio)
+
+
+### Editar necesidad [PUT]
+Edita una necesidad asociada a un centro de acopio. Se necesita información 
+de todos los recursos que contempla la necesidad y el ID del centro de acopio.
+
++ Request (application/json)
+    
+    + Attributes
+    
+        + id_centro_acopio: 2 (number, required)
+    
+        + recursos: Resource, Resource2 (array[Resource], required)
+
+
++ Response 201 (application/json; charset=utf-8)
+
+    + Attributes
+    
+        + id_necesidad: 3 (number, required)
+
+
 # Group Recursos
 Endpoints relacionados a los recursos.
 
@@ -273,26 +351,24 @@ Este endpoint permite obtener todos los recursos disponibles.
 # Group Necesidades
 Endpoints relacionados a las necesidades de beneficiarios y centros de acopio.
 
-## Necesidades [/necesidades]
+## Necesidades [/necesidades{?lat,long}]
 
 ### Obtener todas las necesidades [GET]
-Este endpoint permite obtener las necesidades locales o globales.
+Este endpoint permite obtener todas las necesidades locales o globales.
 Si necesitas obtener las necesidades locales (cercanas a cierta ubicación) debes
 de mandar la latitud y longitud de la ubicación. Si necesitas las necesidades
 globales (todas), no mandes latitud y longitud.
 
-+ Request (application/json)
++ Parameters
     
-    + Attributes
-    
-        + latitud: 83.43 (number)
+    + lat: 83.43 (number)
         
-        + longitud: 32.56 (number)
+    + long: 32.56 (number)
 
 
 + Response 200 (application/json; charset=utf-8)
     
-    + Attributes (array)
+    + Attributes (array[LocalNecessity, LocalNecessity, LocalNecessity, LocalNecessity, LocalNecessity])
     
         + (LocalNecessity)
 
@@ -304,23 +380,30 @@ globales (todas), no mandes latitud y longitud.
 
 + id_propietario: 4 (number, required)
 
++ nombre_propietario: John (string, required)
+
 + propietario_tipo: Centro de acopio (string, required)
 
 + latitud: 83.43 (number, required)
         
 + longitud: 32.56 (number, required)
 
-+ recursos: Resource, Resource2 (array[Resource], required)
++ recursos: ResourceStored2, ResourceStored2 (array[ResourceStored2], required)
 
 ## Necessity
 + id_beneficiario: 2 (number, required)
 
-+ recursos: Resource, Resource2 (array[Resource], required)
++ recursos: ResourceStored, ResourceStored (array[ResourceStored], required)
 
 ## Necessity2
 + id_beneficiario: 4 (number, required)
 
-+ recursos: Resource, Resource2 (array[Resource], required)
++ recursos: ResourceStored, ResourceStored (array[ResourceStored], required)
+
+## NecessityCentroAcopio
++ id_centro_acopio: 4 (number, required)
+
++ recursos: ResourceStored, ResourceStored (array[ResourceStored], required)
 
 ## Resource
 + id: 1 (number, required)
@@ -341,6 +424,17 @@ globales (todas), no mandes latitud y longitud.
 
 + unidad: Litros (string, required)
 
+## ResourceStored2
++ id: 4 (number, required)
+
++ nombre: Agua (string, required)
+
++ categoria: Bebidas (string, required)
+
++ unidad: Litros (string, required)
+
++ cantidad: 50 (number, required)
+
 ## Shipping Orders
 + id: 1 (number, required)
 
@@ -358,7 +452,7 @@ globales (todas), no mandes latitud y longitud.
 + fecha_creacion: `2017-05-10T14:59:50Z`(string, required)
     Fecha y hoa siguiendo el estándar ISO 8601: "YYYY-MM-DDTHH:MM:SSZ",
     
-+ recursos: Resource, Resource2 (array[Resource], required)
++ recursos: ResourceStored, ResourceStored (array[ResourceStored], required)
 
 
     
