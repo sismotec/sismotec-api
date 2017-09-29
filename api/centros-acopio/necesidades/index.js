@@ -3,11 +3,15 @@ const router = express.Router();
 
 const get = require('./get');
 const put = require('./put');
+const post = require('./post');
 
 router.route('/')
 .get(get.handler);
 
 router.route('/')
-.put(get.handler);
+.put(put.handler);
+
+router.route('/')
+.post(post.handler);
 
 module.exports = router;
