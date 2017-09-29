@@ -1,10 +1,10 @@
 const models = require('./../../../../models');
-const {CentroDeAcopio, OrdenEnvio, RecursoOrden, Recurso, Categoria, UnidadDeMedida} = models;
+const {CentroDeAcopio, OrdenEnvio, RecursoOrden, Recurso, Categoria, UnidadDeMedida, NecesidadBeneficiario, Beneficiario} = models;
 
 let handler = (req, res) =>{
 	let id = req.query.id_centro_acopio;
 
-	CentroDeAcopio.findOne({include: [{model: OrdenEnvio, as: 'ordenes_de_envio', include: [{model: RecursoOrden, as: 'recurso_ordenes', include: [{model: Recurso, as: 'recurso', include: [{model: Categoria, as: 'categoria'}, {model: UnidadDeMedida, as: 'unidad_de_medida'}]}]}]}], where: {id: id}})
+	CentroDeAcopio.findOne({include: [{model: OrdenEnvio, as: 'ordenes_de_envio', include: [{model: NecesidadBeneficiario, as: 'necesidad_beneficiario', include: [{model: Beneficiario, as: 'beneficiario'}]}, {model: RecursoOrden, as: 'recurso_ordenes', include: [{model: Recurso, as: 'recurso', include: [{model: Categoria, as: 'categoria'}, {model: UnidadDeMedida, as: 'unidad_de_medida'}]}]}]}], where: {id: id}})
 	.then(centro_de_acopio => {
 		var ordenes = [];
 		var recursos;
@@ -23,8 +23,10 @@ let handler = (req, res) =>{
 			}
 
 			ordenes.push({
-				id: centro_de_acopio['ordenes_de_envio'][i].id, //del envío
-				organizacion: centro_de_acopio.nombre_organizacion,
+				id_origen: centro_de_acopio.id,
+				id_destino: centro_de_acopio['ordenes_de_envio'][i]['necesidad_beneficiario']['beneficiario'].id,
+				nombre_origen: centro_de_acopio.nombre_organizacion,
+				nombre_destino:centro_de_acopio['ordenes_de_envio'][i]['necesidad_beneficiario']['beneficiario'].nombre_instituto,
 				origen_latitud: centro_de_acopio['ordenes_de_envio'][i].origen_latitud,
 				origen_longitud: centro_de_acopio['ordenes_de_envio'][i].origen_longitud,
 				destino_latitud: centro_de_acopio['ordenes_de_envio'][i].destino_latitud,
