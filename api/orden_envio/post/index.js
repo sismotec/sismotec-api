@@ -44,7 +44,7 @@ let handler = (req, res) => {
               })
 
               return Promise.all(promises);
-            });
+            }, {transaction: t});
 
           }).then(function (result) {
             // Transaction has been committed
