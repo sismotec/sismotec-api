@@ -1,5 +1,5 @@
 const models = require('./../../../../models');
-const {OrdenEnvio, NecesidadBeneficiario, Beneficiario, Recurso, Categoria, UnidadDeMedida, CantidadBeneficiarioRecurso, RecursoOrden} = models;
+const {OrdenEnvio, NecesidadBeneficiario, Beneficiario, Recurso, Categoria, UnidadDeMedida, RecursoOrden} = models;
 
 let handler = (req, res) => {
 	let id = req.query.id_beneficiario;
@@ -21,7 +21,8 @@ let handler = (req, res) => {
 			}
 
 			ordenes.push({
-				id: beneficiario['necesidad_beneficiario']['ordenes_de_envio'][i].id,
+				id: beneficiario['necesidad_beneficiario']['ordenes_de_envio'][i].id, //Del envío
+				organizacion: beneficiario.nombre_instituto,
 				origen_latitud: beneficiario['necesidad_beneficiario']['ordenes_de_envio'][i].origen_latitud,
 				origen_longitud: beneficiario['necesidad_beneficiario']['ordenes_de_envio'][i].origen_longitud,
 				destino_latitud: beneficiario['necesidad_beneficiario']['ordenes_de_envio'][i].destino_latitud,
