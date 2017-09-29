@@ -6,8 +6,8 @@ let handler = (req, res) => {
   const {id_orden} = req.body;
   OrdenEnvio.findById(id_orden).then(oe => {
     if(oe){
-      if(oe.estado != "engregado"){
-        oe.estado = entregado
+      if(oe.status != "entregado"){
+        oe.status = "entregado"
         oe.save().then(() => {
           res.send({});
         });
@@ -18,7 +18,8 @@ let handler = (req, res) => {
       res.send({error: "No existe la orden"});
     }
   })
-  .catch(err => {
+  .catch((err) => {
+    console.log(err);
     res.send({error: err});
   });
 };
