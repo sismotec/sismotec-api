@@ -8,6 +8,6 @@ router.route('/')
 .get(get.handler);
 
 router.route('/')
-.put(get.handler);
+.put(put.handler);
 
 module.exports = router;
