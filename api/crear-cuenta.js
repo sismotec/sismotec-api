@@ -1,4 +1,4 @@
-const models = require('../../../models');
+/*const models = require('../../../models');
 const {Beneficiario, CentroDeAcopio} = models;
 var shajs = require('sha.js')
 
@@ -79,4 +79,4 @@ let handler = (req, res) => {
 		}
 	}
 };
-module.exports = {handler};
+module.exports = {handler};*/
