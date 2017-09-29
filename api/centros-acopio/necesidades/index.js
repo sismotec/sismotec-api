@@ -4,6 +4,9 @@ const router = express.Router();
 const get = require('./get');
 const put = require('./put');
 const post = require('./post');
+const confirmar = require('./confirmar');
+
+router.use('/confirmar', confirmar);
 
 router.route('/')
 .get(get.handler);

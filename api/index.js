@@ -15,10 +15,6 @@ api.use('/centros-acopio', centrosAcopio);
 api.use('/iniciar-sesion', iniciarSesion);
 api.use('/necesidades', necesidades);
 api.use('/ordenes-envio', ordenes_envio);
-<<<<<<< HEAD
 api.post('/crear-cuenta', crear_cuenta.handler);
-=======
 api.use('/recursos', recursos);
-
->>>>>>> 0fc3525e4cecb26ba8bfec927d09f83c0db4af1d
 module.exports = api;
