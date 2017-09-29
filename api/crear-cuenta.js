@@ -15,6 +15,7 @@ let handler = (req, res) => {
 	estado = req.body.estado
 
 	password = sha256(password);
+	console.log(password);
 
 	if(id_usuario == null && tipo_usuario
 		== null){
