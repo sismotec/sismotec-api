@@ -1,9 +1,8 @@
-const models = require('../../../models');
+const models = require('./../models');
 const {Beneficiario, CentroDeAcopio} = models;
-var shajs = require('sha.js')
+const sha256 = require('sha256');
 
 let handler = (req, res) => {
-	id_usuario = req.body.id
 	tipo_usuario = req.body.tipo
 	nombre_organizacion = req.body.nombre_organizacion
 	nombre_responsable = req.body.nombre_responsable
@@ -15,15 +14,12 @@ let handler = (req, res) => {
 	estado = req.body.estado
 
 	password = sha256(password);
-	console.log(password);
 
-	if(id_usuario == null && tipo_usuario
-		== null){
+	if(tipo_usuario == null){
 		res.send({code: 404, message: 'Register Error'});	
 	}else{
 		if (tipo_usuario == "Centro de acopio") {
 			CentroDeAcopio.create({ 
-				id: id_usuario,
 				latitud: latitud,
 				longitud: longitud,
 				nombre_organizacion: nombre_organizacion,
@@ -35,8 +31,7 @@ let handler = (req, res) => {
 			  .then(() => CentroDeAcopio.findOrCreate({
 			  	where: {
 			  		email: email,
-			  		celular: celular,
-			  		id: id_usuario
+			  		celular: celular
 			  	}, 
 			  	defaults: {
 			  		horario: null
@@ -46,13 +41,9 @@ let handler = (req, res) => {
 			      plain: true
 			    }))
 			    console.log(created)
-				})
-			  .catch(function (err) {
-			  	res.send({code: 404, message: 'Register Error'});
-			  });
+				});
 		}else{
 			Beneficiario.create({ 
-				id: id_usuario,
 				latitud: latitud,
 				longitud: longitud,
 				nombre_instituto: nombre_organizacion,
@@ -64,8 +55,7 @@ let handler = (req, res) => {
 			  .then(() => CentroDeAcopio.findOrCreate({
 			  	where: {
 			  		email: email,
-			  		celular: celular,
-			  		id: id_usuario
+			  		celular: celular
 			  	}}))
 			  .spread((user, created) => {
 			    console.log(user.get({
@@ -74,7 +64,7 @@ let handler = (req, res) => {
 			    console.log(created)
 				})
 			  .catch(function (err) {
-			  	res.send({code: 404, message: 'Register Error'});
+			  	res.status(404).send({code: 404, message: 'Register Error'});
 			  });
 		}
 	}
