@@ -21,9 +21,6 @@ module.exports = function(sequelize, DataTypes) {
     celular: {
       type: Sequelize.STRING
     },
-    horario: {
-      type: Sequelize.INTEGER
-    },
     email: {
       type: Sequelize.STRING
     },

@@ -34,13 +34,14 @@ let handler = (req, res) => {
 			  		celular: celular
 			  	}, 
 			  	defaults: {
-			  		horario: null
+			  		estado: null
 			  	}}))
 			  .spread((user, created) => {
 			    console.log(user.get({
 			      plain: true
 			    }))
 			    console.log(created)
+			    res.send({id: user.id, tipo: tipo_usuario});
 				});
 		}else{
 			Beneficiario.create({ 
@@ -62,10 +63,8 @@ let handler = (req, res) => {
 			      plain: true
 			    }))
 			    console.log(created)
-				})
-			  .catch(function (err) {
-			  	res.status(404).send({code: 404, message: 'Register Error'});
-			  });
+			    res.send({id: user.id, tipo: tipo_usuario});
+				});
 		}
 	}
 };
