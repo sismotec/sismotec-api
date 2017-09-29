@@ -1,15 +1,42 @@
 const models = require('./../../../../models');
-const {Beneficiario, NecesidadBeneficiario, CantidadBeneficiarioRecurso, Recurso} = models;
+const {Beneficiario, Categoria, UnidadDeMedida, NecesidadBeneficiario, CantidadBeneficiarioRecurso, Recurso} = models;
 
 let handler = (req, res) => {
-   let idBeneficiarios = req.query.id_beneficiarios.split(',');
-   console.log('idBeneficiarios', idBeneficiarios);
+   let idBeneficiariosString = req.query.id_beneficiarios;
 
-   //Beneficiario.findAll({include: [{model: NecesidadBeneficiario, as: 'necesidad_beneficiario'}]})
-   CantidadBeneficiarioRecurso.findAll({include: [{model: Recurso, as: 'recurso'}]})
-   .then(data => {
-      console.log('data', data);
-      return res.status(200).send(data);
+   if (idBeneficiariosString == null) {
+      return res.status(400).send();
+   }
+
+   let idBeneficiarios = idBeneficiariosString.split(',');
+
+   NecesidadBeneficiario.findAll({include: [{model: Recurso, as: 'recursos', include: [{model: Categoria, as: 'categoria'}, {model: UnidadDeMedida, as: 'unidad_de_medida'}]}]})
+   .then(necesidadesBeneficiario => {
+      let nuevosRecursos = []
+      let necesidadesBeneficiarioNuevas = [];
+
+      necesidadesBeneficiario.forEach(necesidad => {
+         nuevosRecursos = necesidad.recursos.map(recurso => ({
+            id: recurso.id,
+            nombre: recurso.nombre,
+            categoria: recurso.categoria.categoria,
+            unidad: recurso.unidad_de_medida.unidad
+         }));
+
+         necesidadesBeneficiarioNuevas.push({
+            id_beneficiario: necesidad.id_beneficiario,
+            recursos: nuevosRecursos
+         });
+      });
+
+      if (idBeneficiariosString !== '') {
+         idBeneficiarios = idBeneficiarios.map(id => +id);
+         necesidadesBeneficiarioNuevas = necesidadesBeneficiarioNuevas.filter(necesidad => {
+            return idBeneficiarios.indexOf(necesidad.id_beneficiario) >= 0;
+         });
+      }
+      
+      return res.status(200).send(necesidadesBeneficiarioNuevas);
    })
    .catch(err => {
       console.log('err', err);
