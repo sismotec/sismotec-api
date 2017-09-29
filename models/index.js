@@ -45,14 +45,14 @@ models.forEach(function(model) {
   m.CantidadBeneficiarioRecurso.belongsTo(m.NecesidadBeneficiario, { foreignKey: 'id_necesidad_beneficiario', targetKey: 'id'});
   m.NecesidadBeneficiario.hasMany(m.CantidadBeneficiarioRecurso, {as: 'cantidad_beneficiario_recursos', foreignKey: 'id_necesidad_beneficiario', targetKey: 'id'});
 
-  m.OrdenEnvio.belongsTo(m.CentroDeAcopio, { foreignKey: 'id_acopio', targetKey: 'id'});
-  m.CentroDeAcopio.hasMany(m.OrdenEnvio, {as: 'ordenes_de_envio', foreignKey: 'id_acopio', sourceKey: 'id'});
+  m.OrdenEnvio.belongsTo(m.CentroDeAcopio, { foreignKey: 'id_centro_acopio', targetKey: 'id'});
+  m.CentroDeAcopio.hasMany(m.OrdenEnvio, {as: 'ordenes_de_envio', foreignKey: 'id_centro_acopio', sourceKey: 'id'});
 
   m.OrdenEnvio.belongsTo(m.NecesidadBeneficiario, { foreignKey: 'id_necesidad_beneficiario', targetKey: 'id'});
   m.NecesidadBeneficiario.hasMany(m.OrdenEnvio, {as: 'ordenes_de_envio', foreignKey: 'id_necesidad_beneficiario', sourceKey: 'id'});
 
-  m.Horario.belongsTo(m.CentroDeAcopio, { foreignKey: 'id_acopio', targetKey: 'id'});
-  m.CentroDeAcopio.hasMany(m.Horario, {as: 'horarios', foreignKey: 'id_acopio', sourceKey: 'id'});
+  m.Horario.belongsTo(m.CentroDeAcopio, { foreignKey: 'id_centro_acopio', targetKey: 'id'});
+  m.CentroDeAcopio.hasMany(m.Horario, {as: 'horarios', foreignKey: 'id_centro_acopio', sourceKey: 'id'});
 
   m.Recurso.belongsToMany(m.OrdenEnvio, {as: 'ordenes_de_envio', through: 'RecursoOrden', foreignKey: 'id_recurso'});
   m.OrdenEnvio.belongsToMany(m.Recurso, {as: 'recursos', through: 'RecursoOrden', foreignKey: 'id_orden'});
