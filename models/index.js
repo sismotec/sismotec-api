@@ -57,8 +57,8 @@ models.forEach(function(model) {
   m.RecursoOrden.belongsTo(m.OrdenEnvio, { foreignKey: 'id_orden', targetKey: 'id'});
   m.OrdenEnvio.hasMany(m.RecursoOrden, {as: 'recurso_ordenes', foreignKey: 'id_orden', targetKey: 'id'});
 
-  m.OrdenEnvio.belongsTo(m.CentroDeAcopio, { foreignKey: 'id_acopio', targetKey: 'id'});
-  m.CentroDeAcopio.hasMany(m.OrdenEnvio, {as: 'ordenes_de_envio', foreignKey: 'id_acopio', sourceKey: 'id'});
+  m.OrdenEnvio.belongsTo(m.CentroDeAcopio, { foreignKey: 'id_centro_acopio', targetKey: 'id'});
+  m.CentroDeAcopio.hasMany(m.OrdenEnvio, {as: 'ordenes_de_envio', foreignKey: 'id_centro_acopio', sourceKey: 'id'});
 
   m.OrdenEnvio.belongsTo(m.NecesidadBeneficiario, { foreignKey: 'id_necesidad_beneficiario', targetKey: 'id'});
   m.NecesidadBeneficiario.hasMany(m.OrdenEnvio, {as: 'ordenes_de_envio', foreignKey: 'id_necesidad_beneficiario', sourceKey: 'id'});
