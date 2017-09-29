@@ -9,12 +9,6 @@ let handler = (req, res) => {
 	if(id_usuario == null && tipo_usuario
 		== null){
 		res.send({code: 404, message: 'Login Error'});	
-	}else{
-		if (tipo_usuario == "Centro de acopio") {
-			CentroDeAcopio
-		}else{
-			Beneficiario
-		}
 	}
 };
 module.exports = {handler};
