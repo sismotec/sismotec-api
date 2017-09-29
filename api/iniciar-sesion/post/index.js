@@ -16,18 +16,18 @@ let handler = (req, res) => {
    .then(user => {
       if (user) {
          console.log('user Beneficiario', user);
-         res.send({id: user.id, tipo: 'Beneficiario'});
+         return res.send({id: user.id, tipo: 'Beneficiario'});
       }
 
-      return CentroDeAcopio.findOne({where: {email, password}, attributes: ['id']});
-   })
-   .then(user => {
-      if (user) {
-         console.log('user CentroDeAcopio', user);
-         res.send({id: user.id, tipo: 'Centro de acopio'});
-      }
-
-      return res.status(404).send();
+      return CentroDeAcopio.findOne({where: {email, password}, attributes: ['id']})
+      .then(user => {
+         if (user) {
+            console.log('user CentroDeAcopio', user);
+            return res.send({id: user.id, tipo: 'Centro de acopio'});
+         }
+         
+         return res.status(404).send();
+      })
    })
    .catch(err => {
       console.log('err', err);
